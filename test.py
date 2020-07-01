@@ -61,6 +61,38 @@ def normalise(desc_a_i, a_i):
         norm_a_i.append(round(desc_a_i[i]/desc_a_i[0], 3))
     return norm_a_i
 
+def accuracy(norm_a_i, p_i):
+    cutoff = [0.2, 0.4, 0.6, 0.8, 1.0]
+    a_c = []
+    loss_a_c = []
+    c = 0
+    loss = 0
+    for k in cutoff:
+        for i in range(0, n):
+            if norm_a_i[i] >= k:
+                a_c.append(val_desc_a_i[i])
+        print("Subset that lies in the cutoff of " + str(k))
+        print(a_c)
+        for i in range(0, len(a_c)):
+            if p_i[a_c[i] - 1] > 0:
+                c += 1
+        print(c/len(a_c))
+        a_c = []
+        c = 0   
+        for i in range(0, n):
+            if norm_a_i[i] < k:
+                loss_a_c.append(val_desc_a_i[i])
+        print("Subset that is loss of " + str(k))
+        print(loss_a_c)
+        for i in range(0, len(loss_a_c)):
+            if p_i[loss_a_c[i] - 1] > 0:
+                loss += 1
+        print(loss/len(loss_a_c))
+        loss_a_c = []
+        loss = 0
+
+
+
 
 random_p(p_i)
 for i in range(1, k+1):
@@ -92,11 +124,11 @@ print("Descending a_i:")
 print(val_desc_a_i)
 print("Probs(p_i): ")
 print(desc_p_i)
-"""
+
 print("Descending p_i:")
 print(val_desc_p_i)
-
-m = 100
+"""
+m = n
 c = 0
 for i in range(0, m):
     if p_i[val_desc_a_i[i] - 1] > 0:
@@ -104,34 +136,9 @@ for i in range(0, m):
 print("Count of people affected in range(" + str(m) + " out of " + str(n) + "): " + str(c))
 norm_a_i = normalise(desc_a_i, a_i)
 
+#print(norm_a_i)
 
-print(norm_a_i)
-def accuracy(norm_a_i, p_i):
-    cutoff = 0.6
-    a_c = []
-    loss_a_c = []
-    c = 0
-    loss = 0
-    for i in range(0, n):
-        if norm_a_i[i] >= cutoff:
-            a_c.append(val_desc_a_i[i])
-    print(a_c)
-    for i in range(0, len(a_c)):
-        if p_i[a_c[i] - 1] > 0:
-            c += 1
-    print(c/len(a_c))
-
-    for i in range(0, n):
-        if norm_a_i[i] < cutoff:
-           loss_a_c.append(val_desc_a_i[i])
-    print(loss_a_c)
-    for i in range(0, len(loss_a_c)):
-        if p_i[loss_a_c[i] - 1] > 0:
-            loss += 1
-    print(loss/len(loss_a_c))
 accuracy(norm_a_i, p_i)
-
-
 
 
 
